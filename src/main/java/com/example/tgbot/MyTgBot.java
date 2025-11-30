@@ -9,14 +9,16 @@ import org.telegram.telegrambots.longpolling.starter.SpringLongPollingBot;
 public class MyTgBot implements SpringLongPollingBot {
 
     private final UpdateConsumer updateConsumer;
+    private final String botToken;
 
-    public MyTgBot(UpdateConsumer updateConsumer) {
+    public MyTgBot(UpdateConsumer updateConsumer, @Value("${telegram.bot.token}") String botToken) {
         this.updateConsumer = updateConsumer;
+        this.botToken = botToken;
     }
 
     @Override
     public String getBotToken() {
-        return "8062170151:AAHZwvu7m5I_sqQA-5ooWeVPeV9q8IYF68Y";
+        return botToken;
     }
 
     @Override
