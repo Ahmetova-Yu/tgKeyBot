@@ -1,6 +1,5 @@
 package com.example.tgbot;
 
-//import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;
@@ -14,28 +13,22 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class UpdateConsumer implements LongPollingSingleThreadUpdateConsumer {
     private final TelegramClient telegramClient;
-//    private static boolean isSKBOpen;
-//    private static String humanOpenSKB;
 
     private SKBStateService skbStateService;
 
     public UpdateConsumer(SKBStateService skbStateService,
                           @Value("${telegram.bot.token}") String botToken) {
-//        this.telegramClient = new OkHttpTelegramClient(
-//                "8062170151:AAHZwvu7m5I_sqQA-5ooWeVPeV9q8IYF68Y"
-//        );
+
         this.telegramClient = new OkHttpTelegramClient(botToken);
 
         this.skbStateService = skbStateService;
     }
 
-//    @SneakyThrows
     @Override
     public void consume(Update update) {
 
@@ -51,37 +44,6 @@ public class UpdateConsumer implements LongPollingSingleThreadUpdateConsumer {
             case "Скб закрыт" -> closeSKB(update, chatId);
             case "Статус" -> showStatus(update, chatId);
         }
-
-//        if (update.hasMessage()) {
-//
-//
-//            if (messageText.equals("/start")) {
-//                sendReplyKeyboard(chatId);
-//            } else if (messageText.equals("Ключ у меня")) {
-//                iHaveKey(update, chatId);
-//            } else if (messageText.equals("Скб открыт")) {
-//                OpenSKB(update, chatId);
-//            } else if (messageText.equals("Скб закрыт")) {
-//                CloseSKB(update, chatId);
-//            }
-//        }
-//        System.out.printf(
-//                "Пришло сообщение %s от %s%n",
-//                update.getMessage().getText(),
-//                update.getMessage().getChatId()
-//        );
-//
-//        var chatId = update.getMessage().getChatId();
-//        SendMessage message = SendMessage.builder()
-//                .text("Привет")
-//                .chatId(chatId)
-//                .build();
-//
-//        try {
-//            telegramClient.execute(message);
-//        } catch (TelegramApiException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 
     private void sendReplyKeyboard(Long chatId) {
@@ -108,7 +70,6 @@ public class UpdateConsumer implements LongPollingSingleThreadUpdateConsumer {
                 .oneTimeKeyboard(true)
                 .build();
 
-//        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(keyboardRows);
         message.setReplyMarkup(replyKeyboardMarkup);
 
         try {
@@ -171,21 +132,6 @@ public class UpdateConsumer implements LongPollingSingleThreadUpdateConsumer {
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }
-//        Message message = update.getMessage();
-//        User user = message.getFrom();
-//
-//        String userName = getUserDisplayName(user);
-//
-//        SendMessage mess = SendMessage.builder()
-//                .text("Ключ у " + userName)
-//                .chatId(chatId)
-//                .build();
-//
-//        try {
-//            telegramClient.execute(mess);
-//        } catch (TelegramApiException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 
     private String getUserDisplayName(User user) {
@@ -193,24 +139,6 @@ public class UpdateConsumer implements LongPollingSingleThreadUpdateConsumer {
             return "@" + user.getUserName();  // Если есть @username
         } else {
             return user.getFirstName();       // Иначе просто имя
-        }
-    }
-
-    private void isGivenKey(Update update, Long chatId) {
-        Message message = update.getMessage();
-        User user = message.getFrom();
-
-        String userName = getUserDisplayName(user);
-
-        SendMessage mess = SendMessage.builder()
-                .text("Ключ сдан " + userName)
-                .chatId(chatId)
-                .build();
-
-        try {
-            telegramClient.execute(mess);
-        } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -239,31 +167,6 @@ public class UpdateConsumer implements LongPollingSingleThreadUpdateConsumer {
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }
-//        Message message = update.getMessage();
-//        User user = message.getFrom();
-//        String userName = getUserDisplayName(user);
-//        SendMessage mess = SendMessage.builder().text("Ex").chatId(chatId).build();
-//
-//        if (isSKBOpen) {
-//            mess = SendMessage.builder()
-//                    .text("Скб уже открыт:  " + humanOpenSKB)
-//                    .chatId(chatId)
-//                    .build();
-//        } else {
-//            mess = SendMessage.builder()
-//                    .text("Скб открыт:  " + userName)
-//                    .chatId(chatId)
-//                    .build();
-//
-//            humanOpenSKB = userName;
-//            isSKBOpen = true;
-//        }
-//
-//        try {
-//            telegramClient.execute(mess);
-//        } catch (TelegramApiException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 
     private void closeSKB(Update update, Long chatId) {
@@ -291,30 +194,5 @@ public class UpdateConsumer implements LongPollingSingleThreadUpdateConsumer {
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }
-//        Message message = update.getMessage();
-//        User user = message.getFrom();
-//        String userName = getUserDisplayName(user);
-//        SendMessage mess = SendMessage.builder().text("Ex").chatId(chatId).build();
-//
-//        if (isSKBOpen) {
-//            mess = SendMessage.builder()
-//                    .text("Скб закрыт:  " + userName)
-//                    .chatId(chatId)
-//                    .build();
-//            humanOpenSKB = null;
-//            isSKBOpen = false;
-//
-//        } else {
-//            mess = SendMessage.builder()
-//                    .text("Скб уже закрыт")
-//                    .chatId(chatId)
-//                    .build();
-//        }
-//
-//        try {
-//            telegramClient.execute(mess);
-//        } catch (TelegramApiException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 }
