@@ -1,0 +1,2 @@
+spring.application.name=NAME_TG_BOT
+telegram.bot.token=BOT_TOKEN
